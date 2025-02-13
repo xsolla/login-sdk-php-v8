@@ -1,0 +1,18 @@
+version: '3'
+
+### Services Setup ###########################################
+services:
+
+  ### PHP-FPM Container #######################################
+  php:
+    container_name: ${PROJECT_PREFIX}-app
+    restart: always
+    image: ${PROJECT_PREFIX}/php-${PHP_VERSION}-fpm:latest
+    environment:
+      XDEBUG_CONFIG: remote_host=${PHP_XDEBUG_REMOTE_HOST} remote_port=${PHP_XDEBUG_REMOTE_PORT} remote_enable=1 remote_log=/var/log/xdebug.log
+      PHP_IDE_CONFIG: serverName=${PROJECT_PREFIX}.local
+    volumes:
+      - ../../:/app/
+      - ./php-fpm/logs:/var/log/:delegated
+    expose:
+      - "9000"
